@@ -16,16 +16,17 @@
 // The common contact should be attached to ground.
 
 #include <RotaryEncoder.h>
-
+#include "HID-Project.h"
 // Setup a RoraryEncoder for pins A2 and A3:
-RotaryEncoder encoder(A2, A3);
+RotaryEncoder encoder(5, 6);
 int buttonState = 0;
-const int buttonPin = 5;
+const int buttonPin = 7;
+const int buttonPin2 = 16;
 void setup()
 {
-  Serial.begin(57600);
+
   encoder.setPosition(1);
-pinMode(buttonPin, INPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
   //Serial.println("SimplePollRotator example for the RotaryEncoder library.");
 } // setup()
 
@@ -35,32 +36,32 @@ void loop()
 {
   //delay(10);
   static int pos = 1;
-  ;
+  
   encoder.tick();
 
   int newPos = encoder.getPosition();
-  if (newPos > 100) {
-    newPos = 100;
-    encoder.setPosition(100);
-  }
-   
-
-  if (newPos < 0) {
-    newPos = 0;
-    encoder.setPosition(0);
-  }
-
 
   
   if (pos != newPos) {
-    Serial.print(newPos);
-    Serial.println();
+
+    if(pos > newPos){
+      Consumer.write(MEDIA_VOLUME_UP);
+    }
+     if(pos < newPos){
+      Consumer.write(MEDIA_VOLUME_DOWN);
+    }
     pos = newPos;
     
   } 
-if (buttonState == HIGH) {
-    Serial.print("MUTE");
-    Serial.println();
+  if (!digitalRead(buttonPin)) {
+    Consumer.write(MEDIA_VOLUME_MUTE);
+    delay(300);
+
+  }
+    if (digitalRead(buttonPin2)==HIGH) {
+    Consumer.write(MEDIA_PLAY_PAUSE);
+    delay(300);
+
   }
  
 
