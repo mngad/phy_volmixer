@@ -5,12 +5,16 @@ RotaryEncoder encoder(5, 6);// Setup a RoraryEncoder for pins 5 and 6:
 int buttonState = 0;
 const int buttonPin = 7; //rotenc clicker
 const int buttonPin2 = 16; //playpause
-
+const int buttonPin3 = 14; //skip
+const int buttonPin4 = 15; //back
 void setup()
 {
 
   encoder.setPosition(1);
   pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(buttonPin2, INPUT_PULLUP);
+  pinMode(buttonPin3, INPUT_PULLUP);
+  pinMode(buttonPin4, INPUT_PULLUP);
 
 } 
 
@@ -46,7 +50,16 @@ void loop()
     delay(300);
 
   }
- 
+ if (digitalRead(buttonPin3)==HIGH) {
+    Consumer.write(MEDIA_NEXT);
+    delay(300);
+
+  }
+//   if (digitalRead(buttonPin4)==HIGH) {
+//    Consumer.write(MEDIA_PREVIOUS);
+//    delay(300);
+
+//  } 
 
   
 }
